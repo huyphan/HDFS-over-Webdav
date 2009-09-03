@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+
+<project name="hdfs_webdav" default="jar">
+
+  <property name="hadoop.dir" value="/home/user/hadoop"/>
+
+  <property name="src.dir" value="${basedir}/src/java"/>
+  <property name="lib.dir" value="${basedir}/lib"/>
+
+  <property name="build.dir" value="${basedir}/build"/>
+  <property name="build.classes" value="${build.dir}/classes"/>
+  <property name="webdav.lib.jar" value="${build.dir}/hdfs_webdav.jar"/>
+
+  <path id="classpath">
+    <fileset dir="${hadoop.dir}" >
+      <include name="hadoop-*-core.jar" />
+    </fileset>
+    <fileset dir="${hadoop.dir}/lib/">
+      <include name="*.jar" />
+    </fileset>
+    <fileset dir="${lib.dir}">
+      <include name="*.jar" />
+    </fileset>
+  </path>
+
+  <target name="init">
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${build.classes}"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="${build.dir}"/>
+  </target>
+
+  <target name="compile" depends="init">
+    <javac srcdir="${src.dir}"
+           destdir="${build.classes}">
+      <classpath refid="classpath"/>
+    </javac>
+  </target>
+
+  <target name="jar" depends="compile">
+    <jar jarfile="${webdav.lib.jar}">
+      <fileset dir="${build.classes}"/>
+      <manifest>
+        <attribute name="Main-Class" 
+                   value="org/apache/hadoop/fs/webdav/WebdavServer"/>
+      </manifest>
+    </jar>
+    <copy todir="${lib.dir}">
+      <fileset file="${webdav.lib.jar}"/>
+    </copy>
+  </target>
+
+</project>

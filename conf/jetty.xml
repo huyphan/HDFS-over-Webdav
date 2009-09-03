@@ -1,0 +1,30 @@
+<?xml version="1.0"  encoding="ISO-8859-1"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
+<!-- =============================================================== -->
+<!-- Configure the Jetty Server                                      -->
+<!-- =============================================================== -->
+<Configure class="org.mortbay.jetty.Server">
+
+    <Call name="addRealm">
+        <Arg>
+            <New class="org.apache.hadoop.fs.webdav.WebdavHashUserRealm">
+                <Set name="name">HadoopWebdavRealm</Set>
+                <Set name="config">conf/accounts.properties</Set>
+            </New>
+        </Arg>
+    </Call>
+
+    <Call name="addContext">
+        <Arg>
+            <New id="context" class="org.mortbay.jetty.servlet.WebApplicationContext">
+                <Set name="DefaultsDescriptor">conf/web.xml</Set>
+                <Set name="ContextPath">/</Set>
+                <Call name="setAttribute">
+                    <Arg>webAppContext</Arg>
+                    <Arg><Ref id="context"/></Arg>
+                </Call>
+            </New>
+        </Arg>
+    </Call>
+
+</Configure>
