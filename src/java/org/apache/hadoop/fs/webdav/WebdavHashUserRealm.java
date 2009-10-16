@@ -18,7 +18,7 @@
 
 package org.apache.hadoop.fs.webdav;
 
-import org.mortbay.http.HashUserRealm;
+import org.mortbay.jetty.security.HashUserRealm;
 
 import java.util.*;
 import java.io.IOException;
@@ -57,7 +57,8 @@ public class WebdavHashUserRealm extends HashUserRealm {
 
     public void setConfig(String config) {
         try {
-            this.load(config);
+            super.setConfig(config);
+            this.loadConfig();
         } catch (IOException e) {
             e.printStackTrace();
         }

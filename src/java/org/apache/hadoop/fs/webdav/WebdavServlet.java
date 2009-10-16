@@ -36,7 +36,7 @@ import org.apache.jackrabbit.webdav.*;
 import org.apache.jackrabbit.webdav.simple.LocatorFactoryImpl;
 import org.apache.jackrabbit.webdav.simple.ResourceConfig;
 import org.apache.jackrabbit.webdav.simple.ResourceFactoryImpl;
-import org.mortbay.jetty.servlet.WebApplicationContext;
+import org.mortbay.jetty.webapp.WebAppContext;
 
 
 public class WebdavServlet extends AbstractWebdavServlet {
@@ -328,15 +328,14 @@ public class WebdavServlet extends AbstractWebdavServlet {
         }
 
         if (currentUserName != null) {
-            WebApplicationContext webapp = (WebApplicationContext) application.getAttribute(WebdavServer.WEB_APP_CONTEXT);
-            WebdavHashUserRealm userRealm = (WebdavHashUserRealm) webapp.getRealm();
+            WebAppContext webapp = (WebAppContext) application.getAttribute(WebdavServer.WEB_APP_CONTEXT);
+            WebdavHashUserRealm userRealm = (WebdavHashUserRealm) webapp.getSecurityHandler().getUserRealm();
             List<String> userRoles = userRealm.getUserRoles(currentUserName);
             currentUserRoles = userRoles;
 
             UnixUserGroupInformation ugi = new UnixUserGroupInformation(currentUserName, userRoles.toArray(new String[0]));
             UnixUserGroupInformation.saveToConf(conf, UnixUserGroupInformation.UGI_PROPERTY_NAME, ugi);
         }
-
         return conf;
     }
 

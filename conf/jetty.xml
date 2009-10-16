@@ -5,26 +5,21 @@
 <!-- =============================================================== -->
 <Configure class="org.mortbay.jetty.Server">
 
-    <Call name="addRealm">
+    <Call name="addUserRealm">
         <Arg>
             <New class="org.apache.hadoop.fs.webdav.WebdavHashUserRealm">
-                <Set name="name">HadoopWebdavRealm</Set>
-                <Set name="config">conf/accounts.properties</Set>
+                <Arg>HadoopWebdavRealm</Arg>
+                <Arg>conf/accounts.properties</Arg>
             </New>
         </Arg>
     </Call>
-
-    <Call name="addContext">
-        <Arg>
-            <New id="context" class="org.mortbay.jetty.servlet.WebApplicationContext">
-                <Set name="DefaultsDescriptor">conf/web.xml</Set>
-                <Set name="ContextPath">/</Set>
-                <Call name="setAttribute">
-                    <Arg>webAppContext</Arg>
-                    <Arg><Ref id="context"/></Arg>
-                </Call>
-            </New>
-        </Arg>
+    <Call name="addHandler">
+       <Arg>
+               <New id="DefaultHandler" class="org.mortbay.jetty.webapp.WebAppContext">
+                      <Arg>/</Arg>
+                      <Arg>/</Arg> 
+                      <Call name="setDescriptor"><Arg>conf/web.xml</Arg></Call> 
+               </New>
+       </Arg>
     </Call>
-
 </Configure>

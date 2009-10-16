@@ -22,8 +22,11 @@ import org.apache.commons.cli.*;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
-import org.mortbay.http.SocketListener;
+import org.mortbay.jetty.nio.SelectChannelConnector;
+import org.mortbay.jetty.Connector;
 import org.mortbay.jetty.Server;
+import org.mortbay.xml.XmlConfiguration;
+import java.io.FileInputStream;
 
 public class WebdavServer {
 
@@ -37,12 +40,13 @@ public class WebdavServer {
         LOG.info("Initializing webdav server");
 
         webServer = new Server();
-        webServer.configure("conf/jetty.xml");
+        XmlConfiguration configuration = new XmlConfiguration(new FileInputStream("conf/jetty.xml")); 
+        configuration.configure(webServer);
 
-        SocketListener listener = new SocketListener();
-        listener.setPort(port);
-        listener.setHost(bindAddress);
-        webServer.addListener(listener);
+        Connector connector=new SelectChannelConnector();
+        connector.setPort(port);
+        connector.setHost(bindAddress);
+        webServer.setConnectors(new Connector[]{connector});
     }
 
     public void start() throws Exception {
