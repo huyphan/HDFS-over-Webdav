@@ -18,13 +18,24 @@
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
-
+    <!-- Uncomment these lines if you want check user permission  -->
+    <!--
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>Root of WebDAV</web-resource-name>
             <url-pattern>/*</url-pattern>
         </web-resource-collection>
+        <auth-constraint>
+            <role-name>hdfs-user</role-name>
+        </auth-constraint>
     </security-constraint>
+
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>HDFSUserRealm</realm-name>
+    </login-config>
+    -->
+
 </web-app>
 
 

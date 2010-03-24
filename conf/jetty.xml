@@ -4,21 +4,27 @@
 <!-- Configure the Jetty Server                                      -->
 <!-- =============================================================== -->
 <Configure class="org.mortbay.jetty.Server">
-
+    <!-- Uncomment these lines if you want check user permission  -->
+    <!--
     <Call name="addUserRealm">
         <Arg>
             <New class="org.apache.hadoop.fs.webdav.WebdavHashUserRealm">
-                <Arg>HadoopWebdavRealm</Arg>
-                <Arg>conf/accounts.properties</Arg>
+                <Arg>HDFSUserRealm</Arg>
+                <Arg>/opt/hadoop-0.20.2/conf/accounts.properties</Arg>
             </New>
         </Arg>
     </Call>
+    -->
     <Call name="addHandler">
        <Arg>
                <New id="DefaultHandler" class="org.mortbay.jetty.webapp.WebAppContext">
                       <Arg>/</Arg>
                       <Arg>/</Arg> 
                       <Call name="setDescriptor"><Arg>conf/web.xml</Arg></Call> 
+                      <Call name="setAttribute">
+                          <Arg>webAppContext</Arg>
+                          <Arg><Ref id="DefaultHandler"/></Arg>
+                      </Call>
                </New>
        </Arg>
     </Call>
